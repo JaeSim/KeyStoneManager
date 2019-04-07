@@ -1,0 +1,13 @@
+## Interface: 80105
+## Title: KeyStoneManager
+## Notes: KeyStoneManager for serveral charather.
+
+## SavedVariables: keystone_table
+
+## SavedVariablesPerCharacter: keystone_table
+
+## Version: 1.0
+KeyStoneManager.xml
+KeyStoneManager.lua
+MinimapButton/MinimapButton.lua
+# comment
