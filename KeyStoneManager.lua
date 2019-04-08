@@ -1,5 +1,7 @@
+local addonName, KeyStoneManager = ...;
+
 local PlayerName = GetUnitName("player")
-local PlayerClass = UnitClass("player")
+local localizedClass, englishClass, classIndex = UnitClass("player")
 
 local dgNames = {
 	[244] = '아탈',
@@ -14,17 +16,25 @@ local dgNames = {
 	[353] = '보랄',
 };
 
-local function OnClick_UpdateButton(self)
+local defaultsDb = {
+	node = {}
+};
+
+function KeyStoneManager:OnClick_UpdateButton(self)
 	--SendChatMessage("한글","SAY") 
 	print("You clicked me!")
-	
 	updateKeyStoneDb()
+end
+
+function initialize() 
+
 end
 
 local function OnEvent(self, event, msg, _, _, _, lootingUser)
 	-- SendChatMessage("접속","SAY") 
 	print("enter world!")
     if (event =="PLAYER_LOGIN") then
+		initialize()
 		updateKeyStoneDb()
   
 	elseif (event =="CHAT_MSG_LOOT") then -- 아이템을 획득하면,
@@ -40,15 +50,6 @@ end
 function updateKeyStoneDb()
 	FindCurrentKeystone()
 end
-
-updateButton = CreateFrame("Button", "updateButton", UIParent, "OptionsButtonTemplate")
-updateButton:SetText("U") 
-updateButton:SetPoint("CENTER") 
-
-
-
-updateButton:SetScript("OnClick", OnClick_UpdateButton) 
-
 
 MyAddonFrame = CreateFrame("Frame", nil, UIParent) 
 MyAddonFrame:SetScript("OnEvent",OnEvent) 
@@ -72,8 +73,22 @@ function FindCurrentKeystone()
 					
                     local info = ParseKey(itemLink)
 					local overall, equipped = GetAverageItemLevel()
-					print(PlayerClass)
-					print(format('%s   %s  +%2d단 --%d', PlayerName, dgNames[info.dgId+0], info.keylevel, equipped))
+					
+					if not keystone_table or type(keystone_table) ~= 'table' then 
+					    keystone_table = defaultsDb
+					end
+					
+					keystone_table.node[PlayerName] = {
+						name = PlayerName,
+						cl = classIndex,
+						itemlevel = equipped,
+						dgname = dgNames[info.dgId+0],
+						dglevel = info.keylevel,
+					}
+					for _, node in pairs(keystone_table.node) do
+						print(format('%s %d  %s+%2d단', node.name, node.itemlevel, node.dgname, node.dglevel))
+					end
+					
                     exists = true
                     return itemLink
                     
@@ -98,7 +113,6 @@ function ParseKey(link)
 	-- print(dgId) print(keylevel)
 	-- print(dgNames[dgId+0])
 	
-    
 	return {
 		dgId = dgId,
 		keylevel = keylevel

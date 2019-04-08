@@ -4,8 +4,6 @@
 
 ## SavedVariables: keystone_table
 
-## SavedVariablesPerCharacter: keystone_table
-
 ## Version: 1.0
 KeyStoneManager.xml
 KeyStoneManager.lua

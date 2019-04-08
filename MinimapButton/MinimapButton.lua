@@ -1,8 +1,11 @@
+local addonName, KeyStoneManager = ...;
 -- Minimap button 
 local minibtn = CreateFrame("Button", nil, Minimap)
 minibtn:SetFrameLevel(8)
 minibtn:SetSize(32,32)
 minibtn:SetMovable(true)
+
+local uiflag = 0
 
 minibtn:SetNormalTexture("Interface/COMMON/Indicator-Yellow.png")
 minibtn:SetPushedTexture("Interface/COMMON/Indicator-Yellow.png")
@@ -39,5 +42,19 @@ minibtn:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 52 - (80 * cos(myIconPos)),(80 *
  
 -- Minimap Control clicks
 minibtn:SetScript("OnClick", function()
-    print("You mini button clicked me!")
+	print("You mini button clicked me!")
+    uiflag = 1 - uiflag
+	if uiflag == 1 then 
+		print("create button")
+		updateButton = CreateFrame("Button", "updateButton", UIParent, "OptionsButtonTemplate")
+		updateButton:SetText("U") 
+		updateButton:SetPoint("CENTER") 
+		
+		updateButton:SetScript("OnClick", KeyStoneManager.OnClick_UpdateButton) 
+	elseif uiflag == 0 then
+		print("delete button")
+		updateButton:Hide()
+	end
+
 end)
+
