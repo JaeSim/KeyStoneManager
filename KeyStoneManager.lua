@@ -2,7 +2,7 @@ local addonName, KeyStoneManager = ...;
 
 local PlayerName = GetUnitName("player")
 local localizedClass, englishClass, classIndex = UnitClass("player")
-
+local mythicApiFlag = true
 local dgNames = {
 	[244] = '아탈',
 	[245] = '자유',
@@ -26,36 +26,55 @@ function KeyStoneManager:OnClick_UpdateButton(self)
 	updateKeyStoneDb()
 end
 
+function KeyStoneManager:clearc(self)
+    print("clear")
+	keystone_table = defaultsDb
+end
 function initialize() 
-
+	C_MythicPlus.RequestRewards()
 end
 
 local function OnEvent(self, event, msg, _, _, _, lootingUser)
 	-- SendChatMessage("접속","SAY") 
-	print("enter world!")
     if (event =="PLAYER_LOGIN") then
+		print("enter world!")
 		initialize()
-		updateKeyStoneDb()
+		--updateKeyStoneDb()
   
 	elseif (event =="CHAT_MSG_LOOT") then -- 아이템을 획득하면,
 		local _, _, itemID = strsplit(":", msg) 
-		print("쐐기돌 획득-!")
 		-- local ItemName = GetItemInfo(itemID) 
 		if (PlayerName == lootingUser) and (138019 == itemID) then 
+			print("쐐기돌 획득-!")
 			updateKeyStoneDb()
-      end
-   end
+        end
+	elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
+	    -- WOW API ISSUE . CHALLENGE_MODE_MAPS_UPDATE should be checked.
+		if mythicApiFlag then   -- it is for do just only one
+			mythicApiFlag = false
+		elseif not mythicApiFlag then 
+			return
+		end
+	    updateKeyStoneDb()
+    end
 end
+
 
 function updateKeyStoneDb()
 	FindCurrentKeystone()
+	--https://www.wowinterface.com/forums/showthread.php?t=56454
+	for _, node in pairs(keystone_table.node) do
+		print(format('%s %d  %s %2d단 주차- %2d', node.name, node.itemlevel, node.dgname, node.dglevel,
+		                                          node.parkLevel))
+	end
 end
 
 MyAddonFrame = CreateFrame("Frame", nil, UIParent) 
 MyAddonFrame:SetScript("OnEvent",OnEvent) 
 MyAddonFrame:RegisterEvent("PLAYER_LOGIN")
 MyAddonFrame:RegisterEvent("CHAT_MSG_LOOT")
-
+MyAddonFrame:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE")
+	
 function FindCurrentKeystone()
 	-- print("findkeystone")
     local itemID = 138019
@@ -66,55 +85,38 @@ function FindCurrentKeystone()
 		--print("player 120")
         for bag = 0, NUM_BAG_SLOTS do
             for slot = 0, GetContainerNumSlots(bag) do
-                if(GetContainerItemID(bag, slot) == itemID or GetContainerItemID(bag, slot) == BFAkey) then                    
-                    bagID = bag
-                    slotNum = slot
-                    local itemLink = GetContainerItemLink(bag, slot)
-					
-                    local info = ParseKey(itemLink)
-					local overall, equipped = GetAverageItemLevel()
-					
-					if not keystone_table or type(keystone_table) ~= 'table' then 
-					    keystone_table = defaultsDb
-					end
-					
-					keystone_table.node[PlayerName] = {
-						name = PlayerName,
-						cl = classIndex,
-						itemlevel = equipped,
-						dgname = dgNames[info.dgId+0],
-						dglevel = info.keylevel,
-					}
-					for _, node in pairs(keystone_table.node) do
-						print(format('%s %d  %s+%2d단', node.name, node.itemlevel, node.dgname, node.dglevel))
-					end
-					
+                if(GetContainerItemID(bag, slot) == itemID or GetContainerItemID(bag, slot) == BFAkey) then                    					
                     exists = true
-                    return itemLink
-                    
+                    break 
                 end
                 if not exists then
                     -- clear
                 end
             end   
+			if exists then
+				break
+			end
         end
-    end    
-end
-
--- extract meaningful data from the keystone itemlink
-function ParseKey(link)
-	if not link then
-		return nil
-	end
-
-	local parts = { strsplit(':', link) }
-	local dgId = parts[3]
-	local keylevel = parts[4]
-	-- print(dgId) print(keylevel)
-	-- print(dgNames[dgId+0])
+    end
 	
-	return {
-		dgId = dgId,
-		keylevel = keylevel
-    }
+	if exists then 
+		local mapId = C_MythicPlus.GetOwnedKeystoneChallengeMapID();
+		local level = C_MythicPlus.GetOwnedKeystoneLevel();
+		local park,_,_,_ = C_MythicPlus.GetWeeklyChestRewardLevel();
+		
+		local overall, equipped = GetAverageItemLevel()
+		if not keystone_table or type(keystone_table) ~= 'table' then 
+			keystone_table = defaultsDb
+		end
+		
+		keystone_table.node[PlayerName] = {
+			name = PlayerName,
+			cl = classIndex,
+			itemlevel = equipped,
+			dgname = dgNames[mapId],
+			dglevel = level,
+			parkLevel = park
+		}    
+	end
 end
+

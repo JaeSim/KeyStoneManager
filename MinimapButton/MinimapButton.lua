@@ -42,7 +42,8 @@ minibtn:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 52 - (80 * cos(myIconPos)),(80 *
  
 -- Minimap Control clicks
 minibtn:SetScript("OnClick", function()
-	print("You mini button clicked me!")
+    -- create UI frame
+	local uiFrame = CreateFrame("Frame")
     uiflag = 1 - uiflag
 	if uiflag == 1 then 
 		print("create button")
@@ -54,6 +55,7 @@ minibtn:SetScript("OnClick", function()
 	elseif uiflag == 0 then
 		print("delete button")
 		updateButton:Hide()
+		KeyStoneManager.clearc()
 	end
 
 end)
