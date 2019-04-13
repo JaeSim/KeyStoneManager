@@ -26,16 +26,15 @@ local defaultsDb = {
 
 function KeyStoneManager:OnClick_UpdateButton(self)
 	--SendChatMessage("한글","SAY") 
-	print("You clicked me!")
 	updateKeyStoneDb()
+	UpdateUI()
 end
 
 function KeyStoneManager:clearc(self)
-    print("clear")
-	local temp = keystone_table.config
-	keystone_table = defaultsDb
-	keystone_table.config = temp
+	keystone_table.node = {}
+	UpdateUI()
 end
+
 function initialize() 
 	C_MythicPlus.RequestRewards()
 end
@@ -69,10 +68,11 @@ end
 function updateKeyStoneDb()
 	FindCurrentKeystone()
 	--https://www.wowinterface.com/forums/showthread.php?t=56454
-	for _, node in pairs(keystone_table.node) do
-		print(format('%s %d  %s %2d단 주차- %2d', node.name, node.itemlevel, node.dgname, node.dglevel,
-		                                          node.parkLevel))
-	end
+	--for _, node in pairs(keystone_table.node) do
+	--	print(format('%s %d  %s %2d단 주차- %2d', node.name, node.itemlevel, node.dgname, node.dglevel,
+    --	                                          node.parkLevel))
+	-- end
+
 end
 
 MyAddonFrame = CreateFrame("Frame", nil, UIParent) 
@@ -117,7 +117,7 @@ function FindCurrentKeystone()
 		
 		keystone_table.node[PlayerName] = {
 			name = PlayerName,
-			cl = classIndex,
+			cl = englishClass,
 			itemlevel = equipped,
 			dgname = dgNames[mapId],
 			dglevel = level,
@@ -125,4 +125,3 @@ function FindCurrentKeystone()
 		}    
 	end
 end
-
