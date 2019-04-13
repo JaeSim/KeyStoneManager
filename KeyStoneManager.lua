@@ -32,7 +32,9 @@ end
 
 function KeyStoneManager:clearc(self)
     print("clear")
+	local temp = keystone_table.config
 	keystone_table = defaultsDb
+	keystone_table.config = temp
 end
 function initialize() 
 	C_MythicPlus.RequestRewards()

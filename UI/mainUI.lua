@@ -9,10 +9,13 @@ local uiflag = 0
 
 ksmDb = KeyStoneManager.defaultsDb
 
-minibtn:SetNormalTexture("Interface/COMMON/Indicator-Yellow.png")
-minibtn:SetPushedTexture("Interface/COMMON/Indicator-Yellow.png")
-minibtn:SetHighlightTexture("Interface/COMMON/Indicator-Yellow.png")
-local myIconPos = 0
+minibtn:SetNormalTexture("Interface\\Icons\\inv_relics_hourglass")
+minibtn:SetPushedTexture("Interface\\Icons\\inv_relics_hourglass")
+minibtn:SetHighlightTexture("Interface\\Icons\\inv_relics_hourglass")
+minibtn:SetSize(30,30)
+
+
+local myIconPos = -38.157263
 
 -- Minimap button postion..
 local function UpdateMapBtn()
@@ -50,8 +53,7 @@ minibtn:SetScript("OnClick", function()
 		    -- create UI frame
 		-- Todo: get size from configuration.
 		-- Todo: get position from configuration.
-		
-		uiFrameSizeX = 200
+		uiFrameSizeX = 350
 		uiFrameSizeY = 180
 		uiFrame = CreateFrame("Frame", "uiFrame", UIParent)
 		
@@ -87,7 +89,27 @@ minibtn:SetScript("OnClick", function()
 			ksmDb.config.uiPositionL = self:GetLeft()
 			ksmDb.config.uiPositionB = self:GetBottom()
 		end)
+        --TEXT --
+		local f1 = CreateFrame("Frame", "nameText", uiFrame)
+		local stringtext = f1:CreateFontString(nil,"OVERLAY");
+		f1:SetWidth(1) 
+		f1:SetHeight(1) 
+		f1:SetPoint("CENTER")
+		f1.text = f1:CreateFontString(nil,"ARTWORK") 
+		f1.text:SetFont([[Fonts\2002.TTF]], 13, "OUTLINE")
+		f1.text:SetPoint("CENTER")
+		f1.text:SetJustifyH("LEFT"); -- 좌우 정렬
+		f1.text:SetJustifyV("TOP"); -- 상하 정렬
+		
+		local NameFull = ""
+		for _, node in pairs(keystone_table.node) do
+			NameFull = NameFull .. format('%s %d  %s %2d단 주차- %2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,
+		                                          node.parkLevel)
+		end
+		f1.text:SetText(NameFull)
 
+
+		--Button--
 		buttonSizeX = 60
 		buttonSizeY = 20
 		updateButton = CreateFrame("Button", "updateButton", uiFrame, "OptionsButtonTemplate")
