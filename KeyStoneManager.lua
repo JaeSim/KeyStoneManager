@@ -17,7 +17,11 @@ local dgNames = {
 };
 
 local defaultsDb = {
-	node = {}
+	node = {},
+	config = {
+	    uiPositionL = nil,
+		uiPositionB = nil,
+	}
 };
 
 function KeyStoneManager:OnClick_UpdateButton(self)
