@@ -16,22 +16,61 @@ local dgNames = {
 	[353] = '보랄',
 };
 
+function nodeSortByNameUp(a, b) return (a.name < b.name) end
+function nodeSortByItemLevelUp(a, b) return (a.itemlevel < b.itemlevel) end
+function nodeSortByDgNameUp(a, b) return (a.dgname < b.dgname) end
+function nodeSortByDgLevelUp(a, b) return (a.dglevel < b.dglevel) end
+function nodeSortByParkLevelUp(a, b) return (a.parkLevel < b.parkLevel) end
+
+function nodeSortByNameDown(a, b) return (a.name > b.name) end
+function nodeSortByItemLevelDown(a, b) return (a.itemlevel > b.itemlevel) end
+function nodeSortByDgNameDown(a, b) return (a.dgname > b.dgname) end
+function nodeSortByDgLevelDown(a, b) return (a.dglevel > b.dglevel) end
+function nodeSortByParkLevelDown(a, b) return (a.parkLevel > b.parkLevel) end
+
+local sortFunctions = { 
+	nodeSortByNameUp,
+	nodeSortByItemLevelUp,
+	nodeSortByDgNameUp,
+	nodeSortByDgLevelUp,
+	nodeSortByParkLevelUp,
+	nodeSortByNameDown,
+	nodeSortByItemLevelDown,
+	nodeSortByDgNameDown,
+	nodeSortByDgLevelDown,
+	nodeSortByParkLevelDown,
+}
+
 local defaultsDb = {
 	node = {},
 	config = {
 	    uiPositionL = nil,
 		uiPositionB = nil,
+		clickedButton = 1,
+		clickedButtonToggle = 0,
 	}
 };
 
 function KeyStoneManager:OnClick_UpdateButton(self)
 	--SendChatMessage("한글","SAY") 
-	updateKeyStoneDb()
-	UpdateUI()
+	C_MythicPlus.RequestRewards()
+	--updateKeyStoneDb()
+	--UpdateUI()
+end
+
+function KeyStoneManager:OnClick_ChatButton(self)
+	Node = KeyStoneManager:GetSortedNode()
+	local strMsg = ""
+	for _, node in ipairs(Node) do
+		strMsg = format('%s    %d %s +%2d단 주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
+		--SendChatMessage(strMsg,"SAY") 
+	end
 end
 
 function KeyStoneManager:clearc(self)
 	keystone_table.node = {}
+	keystone_table.config.clickedButton = 1
+	keystone_table.clickedButtonToggle = 0,
 	UpdateUI()
 end
 
@@ -55,24 +94,25 @@ local function OnEvent(self, event, msg, _, _, _, lootingUser)
         end
 	elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
 	    -- WOW API ISSUE . CHALLENGE_MODE_MAPS_UPDATE should be checked.
-		if mythicApiFlag then   -- it is for do just only one
-			mythicApiFlag = false
-		elseif not mythicApiFlag then 
-			return
-		end
+		--if mythicApiFlag then   -- it is for do just only one
+		--	mythicApiFlag = false
+		--elseif not mythicApiFlag then 
+		--	return
+		--end
 	    updateKeyStoneDb()
     end
 end
 
 
 function updateKeyStoneDb()
+	print("updateKeyStoneDb")
 	FindCurrentKeystone()
 	--https://www.wowinterface.com/forums/showthread.php?t=56454
 	--for _, node in pairs(keystone_table.node) do
 	--	print(format('%s %d  %s %2d단 주차- %2d', node.name, node.itemlevel, node.dgname, node.dglevel,
     --	                                          node.parkLevel))
 	-- end
-
+	UpdateUI()
 end
 
 MyAddonFrame = CreateFrame("Frame", nil, UIParent) 
@@ -124,4 +164,20 @@ function FindCurrentKeystone()
 			parkLevel = park
 		}    
 	end
+end
+
+function KeyStoneManager:GetSortedNode() 
+	sortedNode = {}
+	for k , v in pairs(keystone_table.node) do
+		v.name = k --Store the key in an entry called "name"
+		table.insert(sortedNode, v)
+	end
+	
+	-- lua does not support to multiplexing '0'    (e.g. 0 * 5 -> ERROR)
+	if keystone_table.config.clickedButtonToggle == 0 then
+		table.sort(sortedNode, sortFunctions[keystone_table.config.clickedButton])
+	else 
+		table.sort(sortedNode, sortFunctions[keystone_table.config.clickedButton+5])
+	end
+	return sortedNode
 end
