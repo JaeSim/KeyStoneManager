@@ -10,6 +10,11 @@ The goal of addon is
 It is not updated frequently and is updated at will.
 
 History 
+  19-04-14 : Make MainUI and Buttons. 
+  To do List -
+  1) make Chat function
+  2) minimap button texture
+  
   19-04-10 : Use db and get MythicLevel and parking level by using WOW addon API.
   To do List - 
   1) make Main UI when minimap button is clicked.
