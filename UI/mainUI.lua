@@ -1,54 +1,9 @@
 local addonName, KeyStoneManager = ...;
--- Minimap button 
-local minibtn = CreateFrame("Button", nil, Minimap)
-minibtn:SetFrameLevel(8)
-minibtn:SetSize(32,32)
-minibtn:SetMovable(true)
 
 local uiflag = 0
 
 ksmDb = KeyStoneManager.defaultsDb
 
---minibtn:SetBackdrop( {
-			--edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
-			--edgeSize = 10,
-			--insets = { left = 4, right = 3, top = 4, bottom = 4}
-			--} )
-minibtn:SetNormalTexture("Interface\\Icons\\inv_relics_hourglass")
-minibtn:SetPushedTexture("Interface\\Icons\\inv_relics_hourglass")
-minibtn:SetHighlightTexture("Interface\\Icons\\inv_relics_hourglass")
-
-
-local myIconPos = -38.157263
-
--- Minimap button postion..
-local function UpdateMapBtn()
-    local Xpoa, Ypoa = GetCursorPosition()
-    local Xmin, Ymin = Minimap:GetLeft(), Minimap:GetBottom()
-    Xpoa = Xmin - Xpoa / Minimap:GetEffectiveScale() + 70
-    Ypoa = Ypoa / Minimap:GetEffectiveScale() - Ymin - 70
-    myIconPos = math.deg(math.atan2(Ypoa, Xpoa))
-    minibtn:ClearAllPoints()
-    minibtn:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 52 - (80 * cos(myIconPos)), (80 * sin(myIconPos)) - 52)
-end
- 
--- Minimap button left clicked
-minibtn:RegisterForDrag("LeftButton")
-minibtn:SetScript("OnDragStart", function()
-    minibtn:StartMoving()
-    minibtn:SetScript("OnUpdate", UpdateMapBtn)
-end)
- 
-minibtn:SetScript("OnDragStop", function()
-    minibtn:StopMovingOrSizing();
-    minibtn:SetScript("OnUpdate", nil)
-    UpdateMapBtn();
-end)
- 
--- Minimap Set position
-minibtn:ClearAllPoints();
-minibtn:SetPoint("TOPLEFT", Minimap, "TOPLEFT", 52 - (80 * cos(myIconPos)),(80 * sin(myIconPos)) - 52)
-  
 -- Minimap Control clicks
 function toggleUI() 
     uiflag = 1 - uiflag
@@ -58,8 +13,6 @@ function toggleUI()
 		uiFrame:Hide()
 	end
 end
-
-minibtn:SetScript("OnClick", toggleUI)
 
 function reDrawUI()
     uiFrame:Hide()
@@ -189,3 +142,21 @@ function UpdateUI()
 	end
 end
 
+minimap_config = {
+	MinimapPos = 45
+}
+
+function KeyStoneManager_MinimapButton_Reposition()
+	KeyStoneManager_MinimapButton:SetPoint("TOPLEFT","Minimap","TOPLEFT",52-(80*cos(minimap_config.MinimapPos)),(80*sin(minimap_config.MinimapPos))-52)
+end
+
+function KeyStoneManager_MinimapButton_DraggingFrame_OnUpdate()
+	local xpos,ypos = GetCursorPosition()
+	local xmin,ymin = Minimap:GetLeft(), Minimap:GetBottom()
+
+	xpos = xmin-xpos/UIParent:GetScale()+70
+	ypos = ypos/UIParent:GetScale()-ymin-70
+
+	minimap_config.MinimapPos = math.deg(math.atan2(ypos,xpos))
+	KeyStoneManager_MinimapButton_Reposition()
+end

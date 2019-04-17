@@ -62,8 +62,9 @@ function KeyStoneManager:OnClick_ChatButton(self)
 	Node = KeyStoneManager:GetSortedNode()
 	local strMsg = ""
 	for _, node in ipairs(Node) do
-		strMsg = format('%s    %d %s +%2d단 주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
+		strMsg = format('%s    %d %s+%2d단   주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
 		--SendChatMessage(strMsg,"SAY") 
+		print(strMsg)
 	end
 end
 
@@ -171,7 +172,7 @@ function KeyStoneManager:GetSortedNode()
 	for k , v in pairs(keystone_table.node) do
 		v.name = k --Store the key in an entry called "name"
 		table.insert(sortedNode, v)
-	end
+	end	
 	
 	-- lua does not support to multiplexing '0'    (e.g. 0 * 5 -> ERROR)
 	if keystone_table.config.clickedButtonToggle == 0 then

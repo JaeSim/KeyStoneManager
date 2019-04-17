@@ -101,6 +101,8 @@ function createsButton()
 	buttonArray[ksmDb.config.clickedButton]:SetBackdrop( {
 		bgFile = [[Interface\Common\dark-goldframe-button]],
 		insets = { left = 0, right = 0, top = 0, bottom = 0}
-	} )
+	})
+	
 	buttonArray[ksmDb.config.clickedButton]:SetNormalTexture(nil)
+	
 end
