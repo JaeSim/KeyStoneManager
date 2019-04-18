@@ -10,6 +10,11 @@ The goal of addon is
 It is not updated frequently and is updated at will.
 
 History 
+  10-04-18 : implement main function. make minmap button and implement chat function.
+  To do List -
+  1) no update issue when Keystone is updated as finish dunjeon.  
+
+
   19-04-14 : Make MainUI and Buttons. 
   To do List -
   1) make Chat function

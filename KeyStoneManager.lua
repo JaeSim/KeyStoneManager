@@ -58,13 +58,13 @@ function KeyStoneManager:OnClick_UpdateButton(self)
 	--UpdateUI()
 end
 
-function KeyStoneManager:OnClick_ChatButton(self)
+function KeyStoneManager:OnClick_ChatButton(arg1)
 	Node = KeyStoneManager:GetSortedNode()
 	local strMsg = ""
 	for _, node in ipairs(Node) do
 		strMsg = format('%s    %d %s+%2d단   주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
-		--SendChatMessage(strMsg,"SAY") 
-		print(strMsg)
+		SendChatMessage(strMsg,self) 
+		--print(strMsg)
 	end
 end
 

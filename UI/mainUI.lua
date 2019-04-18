@@ -11,6 +11,7 @@ function toggleUI()
 		UpdateUI()
 	elseif uiflag == 0 then
 		uiFrame:Hide()
+		chatflag = 0
 	end
 end
 
