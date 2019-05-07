@@ -60,11 +60,16 @@ end
 
 function KeyStoneManager:OnClick_ChatButton(arg1)
 	Node = KeyStoneManager:GetSortedNode()
-	local strMsg = ""
+	local idx = 1
 	for _, node in ipairs(Node) do
-		strMsg = format('%s    %d %s+%2d단   주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
-		SendChatMessage(strMsg,self) 
-		--print(strMsg)
+		local temp = format('%s    %d %s+%2d단   주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
+
+		-- It has timing issue. when it is called SendChatMessage without delay, The order of line is twisted.
+		-- It seems that The order is changed by WOW's engine.
+		C_Timer.After(0.02 * idx, function() SendChatMessage(temp,self) end)
+		-- lua does not support i++ operation
+		idx = idx + 1
+		--print(temp)
 	end
 end
 

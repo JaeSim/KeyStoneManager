@@ -6,12 +6,22 @@ ksmDb = KeyStoneManager.defaultsDb
 
 -- Minimap Control clicks
 function toggleUI() 
-    uiflag = 1 - uiflag
+	if uiFrame ~= nil then
+		local isVisible = uiFrame:IsVisible()
+		-- escape key case
+		if isVisible == false and uiflag == 1 then
+			uiflag = 0
+		end
+	end
+	
+	uiflag = 1 - uiflag
+
 	if uiflag == 1 then 
 		UpdateUI()
 	elseif uiflag == 0 then
 		uiFrame:Hide()
 		chatflag = 0
+		clearflag = 0
 	end
 end
 
@@ -30,7 +40,7 @@ function UpdateUI()
 		uiFrameSizeX = 250
 		uiFrameSizeY = 180
 		uiFrame = CreateFrame("Frame", "uiFrame", UIParent)
-		
+		tinsert(UISpecialFrames, "uiFrame")
 		uiFrame:SetSize(uiFrameSizeX, uiFrameSizeY)
 		ksmDb = keystone_table
 		

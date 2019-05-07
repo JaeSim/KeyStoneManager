@@ -1,7 +1,7 @@
 local addonName, KeyStoneManager = ...;
 
 chatflag = 0
-
+clearflag = 0
 function createsButton()
 	--Button--
 	buttonSizeX = 60
@@ -17,12 +17,18 @@ function createsButton()
 	chatButton:SetSize(buttonSizeX, buttonSizeY)
 	chatButton:SetPoint("TOP", 30, -5) 
 	chatButton:SetScript("OnClick", toggleChatFrame) 
-	
-	clearButton = CreateFrame("Button", "clearButton", uiFrame, "GameMenuButtonTemplate")
+
+	clearButton = CreateFrame("Button", "clearButton", uiFrame, "UIPanelButtonGrayTemplate")
 	clearButton:SetText("Clear")
 	clearButton:SetSize(buttonSizeX, buttonSizeY)
-	clearButton:SetPoint("BOTTOM", 0, 5) 
-	clearButton:SetScript("OnClick", KeyStoneManager.clearc) 
+	clearButton:SetPoint("BOTTOMRIGHT", -5, 5) 
+	clearButton:SetScript("OnClick", toggleClearFrame) 
+	
+	closeButton2 = CreateFrame("Button", "closeButton2", uiFrame, "GameMenuButtonTemplate")
+	closeButton2:SetText("Close")
+	closeButton2:SetSize(buttonSizeX, buttonSizeY)
+	closeButton2:SetPoint("BOTTOM", 0, 5) 
+	closeButton2:SetScript("OnClick", toggleUI) 
 	
 	closeButton = CreateFrame("Button", "closeButton", uiFrame, "UIPanelCloseButton")
 	closeButton:SetText("X")
@@ -110,6 +116,9 @@ function createsButton()
 	if chatflag == 1 then
 		createChatFrame()
 	end
+	if clearflag == 1 then
+		createClearFrame()
+	end
 end
 
 function toggleChatFrame()
@@ -164,4 +173,54 @@ function createChatFrame()
 		sayButton:SetNormalTexture("Interface\\Common\\dark-goldframe-button")
 		chatButton[i] = sayButton
 	end	
+end
+
+function toggleClearFrame()
+    clearflag = 1 - clearflag
+	if clearflag == 1 then 
+		createClearFrame()
+	elseif clearflag == 0 then
+		clearFrame:Hide()
+	end
+end
+
+function createClearFrame() 
+	clearFrame = CreateFrame("Frame", "clearFrame", clearButton)
+	clearFrame:SetSize(250, 60)
+	clearFrame:SetPoint("BOTTOMLEFT", 20, 5)
+	clearFrame:SetBackdrop( {
+		bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+		tile = true,
+		tilesize = 5,
+		edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+		edgeSize = 10,
+		insets = { left = 4, right = 3, top = 4, bottom = 3}
+		} )
+	clearFrame:SetBackdropColor(0.2,0.2,0.2,0.7)
+	
+	confirmYesButton = CreateFrame("Button", "confirmYesButton", clearFrame, "UIPanelButtonGrayTemplate")
+	confirmYesButton:SetText("YES")
+	confirmYesButton:SetSize(80, 20)
+	confirmYesButton:SetPoint("BOTTOM", -40, 5) 
+	confirmYesButton:SetScript("OnClick", function() 
+	    KeyStoneManager.clearc()
+		toggleClearFrame()
+	end) 
+	
+	confirmNoButton = CreateFrame("Button", "confirmNoButton", clearFrame, "GameMenuButtonTemplate")
+	confirmNoButton:SetText("NO")
+	confirmNoButton:SetSize(80, 20)
+	confirmNoButton:SetPoint("BOTTOM", 40, 5) 
+	confirmNoButton:SetScript("OnClick", toggleClearFrame) 
+	
+	local clearText = CreateFrame("Frame", nil, clearFrame)
+	clearText:SetWidth(1) 
+	clearText:SetHeight(1) 
+	clearText:SetPoint("TOP", 0,-10)
+	clearText.text = clearText:CreateFontString(nil,"ARTWORK") 
+	clearText.text:SetFont([[Fonts\2002.TTF]], 13, "OUTLINE")
+	clearText.text:SetPoint("TOP")
+	clearText.text:SetJustifyH("LEFT"); -- Left or Right
+	clearText.text:SetJustifyV("TOP"); -- Top or Bottom
+	clearText.text:SetText("Do you want to erase all data?")
 end
