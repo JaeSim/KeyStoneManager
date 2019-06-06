@@ -8,7 +8,7 @@ ksmDb = KeyStoneManager.defaultsDb
 function toggleUI() 
 	if uiFrame ~= nil then
 		local isVisible = uiFrame:IsVisible()
-		-- escape key case
+		-- For escape key case, it should be toggled again
 		if isVisible == false and uiflag == 1 then
 			uiflag = 0
 		end
@@ -18,6 +18,7 @@ function toggleUI()
 
 	if uiflag == 1 then 
 		UpdateUI()
+		uiFrame:Show()
 	elseif uiflag == 0 then
 		uiFrame:Hide()
 		chatflag = 0
@@ -28,20 +29,24 @@ end
 function reDrawUI()
     uiFrame:Hide()
 	UpdateUI()
+	uiFrame:Show()
 end
 
 function UpdateUI()
 	-- create UI frame
 	-- Todo: get size from configuration.
 	if (uiflag == 1) then 
+		local isVisible = false
 		if uiFrame ~= nil then
-			uiFrame:Hide()
+			isVisible = uiFrame:IsVisible()
 		end
 		uiFrameSizeX = 250
 		uiFrameSizeY = 180
 		uiFrame = CreateFrame("Frame", "uiFrame", UIParent)
 		tinsert(UISpecialFrames, "uiFrame")
 		uiFrame:SetSize(uiFrameSizeX, uiFrameSizeY)
+		uiFrame:Hide()
+		
 		ksmDb = keystone_table
 		
 		if ksmDb.config.uiPositionL == nil or ksmDb.config.uiPositionB == nil then
@@ -150,6 +155,10 @@ function UpdateUI()
 		
 		-- refer buttonUI.lua
 		createsButton()
+		
+		if isVisible == true then
+			uiFrame:Show()
+		end
 	end
 end
 

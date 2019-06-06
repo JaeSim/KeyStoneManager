@@ -66,7 +66,7 @@ function KeyStoneManager:OnClick_ChatButton(arg1)
 
 		-- It has timing issue. when it is called SendChatMessage without delay, The order of line is twisted.
 		-- It seems that The order is changed by WOW's engine.
-		C_Timer.After(0.02 * idx, function() SendChatMessage(temp,self) end)
+		C_Timer.After(0.20 * idx, function() SendChatMessage(temp,self) end)
 		-- lua does not support i++ operation
 		idx = idx + 1
 		--print(temp)
