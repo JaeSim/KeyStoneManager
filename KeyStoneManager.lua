@@ -62,7 +62,22 @@ function KeyStoneManager:OnClick_ChatButton(arg1)
 	Node = KeyStoneManager:GetSortedNode()
 	local idx = 1
 	for _, node in ipairs(Node) do
-		local temp = format('%s    %d %s+%2d단   주차:%2d\n', node.name, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
+	    
+        local strlen = string.len(node.name)
+	    if not (isAlphaStr(node.name)) then 
+		    -- Korean case
+		    -- Korean case, it is 3 len per each character.
+		    -- But, displayed lenght is below.
+		    -- 1 English < 1 Korean char < 2 English . and it can be wrong by font style.
+			strlen = (strlen / 3) * 2
+		end
+		local blankStr = ""
+		for blank = strlen, 12 do
+		    -- WOW system diplays string had many space as just 4 black.. So, i just set it as '-'
+		    blankStr = blankStr .. "-"    
+		end
+		
+		local temp = format('%s%s%d-%s-%2d단---주차:%2d\n', node.name, blankStr, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
 
 		-- It has timing issue. when it is called SendChatMessage without delay, The order of line is twisted.
 		-- It seems that The order is changed by WOW's engine.
@@ -90,21 +105,8 @@ local function OnEvent(self, event, msg, _, _, _, lootingUser)
 		print("enter world!")
 		initialize()
 		--updateKeyStoneDb()
-  
-	elseif (event =="CHAT_MSG_LOOT") then -- 아이템을 획득하면,
-		local _, _, itemID = strsplit(":", msg) 
-		-- local ItemName = GetItemInfo(itemID) 
-		if (PlayerName == lootingUser) and (138019 == itemID) then 
-			print("쐐기돌 획득-!")
-			updateKeyStoneDb()
-        end
 	elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
-	    -- WOW API ISSUE . CHALLENGE_MODE_MAPS_UPDATE should be checked.
-		--if mythicApiFlag then   -- it is for do just only one
-		--	mythicApiFlag = false
-		--elseif not mythicApiFlag then 
-		--	return
-		--end
+	    -- below logic will be called when MythicPlus is finished.
 	    updateKeyStoneDb()
     end
 end
@@ -186,4 +188,8 @@ function KeyStoneManager:GetSortedNode()
 		table.sort(sortedNode, sortFunctions[keystone_table.config.clickedButton+5])
 	end
 	return sortedNode
+end
+
+function isAlphaStr(str) 
+    return (string.match(str, "[^%w]") == nil)
 end

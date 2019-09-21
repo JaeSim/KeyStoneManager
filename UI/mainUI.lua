@@ -17,6 +17,7 @@ function toggleUI()
 	uiflag = 1 - uiflag
 
 	if uiflag == 1 then 
+	    C_MythicPlus.RequestRewards()
 		UpdateUI()
 		uiFrame:Show()
 	elseif uiflag == 0 then
@@ -39,6 +40,7 @@ function UpdateUI()
 		local isVisible = false
 		if uiFrame ~= nil then
 			isVisible = uiFrame:IsVisible()
+			uiFrame:Hide()
 		end
 		uiFrameSizeX = 250
 		uiFrameSizeY = 180
