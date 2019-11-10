@@ -5,8 +5,8 @@
 ## SavedVariables: keystone_table
 
 ## Version: 1.0
-KeyStoneManager.xml
-KeyStoneManager.lua
+LiteKeyStoneManager.xml
+LiteKeyStoneManager.lua
 UI/mainUI.lua
 UI/buttonUI.lua
 UI/MinimapButton.xml
