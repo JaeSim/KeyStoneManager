@@ -1,4 +1,4 @@
-# KeyStoneManager
+# LiteKeyStoneManager
 World of Warcraft Keystone Addon
 
 It is simple addon for tracking keystone.
