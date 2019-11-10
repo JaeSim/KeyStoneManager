@@ -6,8 +6,9 @@ It is simple addon for tracking keystone.
 The goal of addon is
   1. collect Keystone data from characters in same BattleNet Account
   2. make help to report Keystone's you have.
+  3. implement addon wihout heavy library
  
-It is not updated frequently and is updated at will.
+It is not updated frequently and is updated at will. (current version for 8.2)
 
 History 
   10-04-18 : implement main function. make minmap button and implement chat function.
