@@ -1,8 +1,8 @@
-local addonName, KeyStoneManager = ...;
+local addonName, LiteKeyStoneManager = ...;
 
 local uiflag = 0
 
-ksmDb = KeyStoneManager.defaultsDb
+ksmDb = LiteKeyStoneManager.defaultsDb
 
 -- Minimap Control clicks
 function toggleUI() 
@@ -83,7 +83,7 @@ function UpdateUI()
 		--TEXT --
 		
 
-		Node = KeyStoneManager:GetSortedNode()
+		Node = LiteKeyStoneManager:GetSortedNode()
 		
 		local nameFull = "" local itemlevelFull = "" local dgnameFull = "" local dglevelFull = "" local parkLevelFull = ""
 		for _, node in ipairs(Node) do
@@ -168,11 +168,11 @@ minimap_config = {
 	MinimapPos = 45
 }
 
-function KeyStoneManager_MinimapButton_Reposition()
-	KeyStoneManager_MinimapButton:SetPoint("TOPLEFT","Minimap","TOPLEFT",52-(80*cos(minimap_config.MinimapPos)),(80*sin(minimap_config.MinimapPos))-52)
+function LiteKeyStoneManager_MinimapButton_Reposition()
+	LiteKeyStoneManager_MinimapButton:SetPoint("TOPLEFT","Minimap","TOPLEFT",52-(80*cos(minimap_config.MinimapPos)),(80*sin(minimap_config.MinimapPos))-52)
 end
 
-function KeyStoneManager_MinimapButton_DraggingFrame_OnUpdate()
+function LiteKeyStoneManager_MinimapButton_DraggingFrame_OnUpdate()
 	local xpos,ypos = GetCursorPosition()
 	local xmin,ymin = Minimap:GetLeft(), Minimap:GetBottom()
 
@@ -180,5 +180,5 @@ function KeyStoneManager_MinimapButton_DraggingFrame_OnUpdate()
 	ypos = ypos/UIParent:GetScale()-ymin-70
 
 	minimap_config.MinimapPos = math.deg(math.atan2(ypos,xpos))
-	KeyStoneManager_MinimapButton_Reposition()
+	LiteKeyStoneManager_MinimapButton_Reposition()
 end

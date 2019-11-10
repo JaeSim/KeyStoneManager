@@ -1,4 +1,4 @@
-local addonName, KeyStoneManager = ...;
+local addonName, LiteKeyStoneManager = ...;
 
 chatflag = 0
 clearflag = 0
@@ -10,7 +10,7 @@ function createsButton()
 	updateButton:SetText("Update")
 	updateButton:SetSize(buttonSizeX, buttonSizeY)
 	updateButton:SetPoint("TOP", -30 , -5) 
-	updateButton:SetScript("OnClick", KeyStoneManager.OnClick_UpdateButton) 
+	updateButton:SetScript("OnClick", LiteKeyStoneManager.OnClick_UpdateButton) 
 
 	chatButton = CreateFrame("Button", "chatButton", uiFrame, "GameMenuButtonTemplate")
 	chatButton:SetText("Chat")
@@ -167,7 +167,7 @@ function createChatFrame()
 		local ypos = 20 + (i * -25)
 		sayButton:SetPoint("TOP", 0, ypos) 
 		sayButton:SetScript("OnClick", function() 
-		    KeyStoneManager.OnClick_ChatButton(chattypearry[i]) 
+		    LiteKeyStoneManager.OnClick_ChatButton(chattypearry[i]) 
 			toggleChatFrame()
 		end)	
 		sayButton:SetNormalTexture("Interface\\Common\\dark-goldframe-button")
@@ -203,7 +203,7 @@ function createClearFrame()
 	confirmYesButton:SetSize(80, 20)
 	confirmYesButton:SetPoint("BOTTOM", -40, 5) 
 	confirmYesButton:SetScript("OnClick", function() 
-	    KeyStoneManager.clearc()
+	    LiteKeyStoneManager.clearc()
 		toggleClearFrame()
 	end) 
 	

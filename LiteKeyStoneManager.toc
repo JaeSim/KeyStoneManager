@@ -1,6 +1,6 @@
-## Interface: 80105
-## Title: KeyStoneManager
-## Notes: KeyStoneManager for serveral charather.
+## Interface: 80205
+## Title: LiteKeyStoneManager
+## Notes: LiteKeyStoneManager for serveral charather.
 
 ## SavedVariables: keystone_table
 

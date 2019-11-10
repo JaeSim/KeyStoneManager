@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
 <Script file="mainUI.lua"/>
-	<Button name="KeyStoneManager_MinimapButton" parent="Minimap" enableMouse="true" movable="true" hidden="false">
+	<Button name="LiteKeyStoneManager_MinimapButton" parent="Minimap" enableMouse="true" movable="true" hidden="false">
 		<Size>
 			<AbsDimension x="33" y="33"/>
 		</Size>
@@ -9,7 +9,7 @@
 		</Anchors>
 		<Layers>
 			<Layer level="ARTWORK">
-				<Texture name="KeyStoneManager_MinimapButton_Icon" file="Interface\Icons\inv_relics_hourglass">
+				<Texture name="LiteKeyStoneManager_MinimapButton_Icon" file="Interface\Icons\inv_relics_hourglass">
 					<Size>
 						<AbsDimension x="23" y="23"/>
 					</Size>
@@ -34,10 +34,10 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="KeyStoneManager_MinimapButton_DraggingFrame" hidden="true">
+			<Frame name="LiteKeyStoneManager_MinimapButton_DraggingFrame" hidden="true">
 				<Scripts>
 					<OnUpdate>
-						KeyStoneManager_MinimapButton_DraggingFrame_OnUpdate()
+						LiteKeyStoneManager_MinimapButton_DraggingFrame_OnUpdate()
 					</OnUpdate>
 				</Scripts>
 			</Frame>
@@ -51,11 +51,11 @@
 			<OnDragStart>
 				self:LockHighlight()
 				self:StartMoving()
-				KeyStoneManager_MinimapButton_DraggingFrame:Show()
+				LiteKeyStoneManager_MinimapButton_DraggingFrame:Show()
 			</OnDragStart>
 			<OnDragStop>
 				self:UnlockHighlight()
-				KeyStoneManager_MinimapButton_DraggingFrame:Hide()
+				LiteKeyStoneManager_MinimapButton_DraggingFrame:Hide()
 				self:StopMovingOrSizing()
 			</OnDragStop>
 			<OnClick>

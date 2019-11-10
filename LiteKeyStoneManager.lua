@@ -1,4 +1,4 @@
-local addonName, KeyStoneManager = ...;
+local addonName, LiteKeyStoneManager = ...;
 
 local PlayerName = GetUnitName("player")
 local localizedClass, englishClass, classIndex = UnitClass("player")
@@ -51,15 +51,15 @@ local defaultsDb = {
 	}
 };
 
-function KeyStoneManager:OnClick_UpdateButton(self)
+function LiteKeyStoneManager:OnClick_UpdateButton(self)
 	--SendChatMessage("한글","SAY") 
 	C_MythicPlus.RequestRewards()
 	--updateKeyStoneDb()
 	--UpdateUI()
 end
 
-function KeyStoneManager:OnClick_ChatButton(arg1)
-	Node = KeyStoneManager:GetSortedNode()
+function LiteKeyStoneManager:OnClick_ChatButton(arg1)
+	Node = LiteKeyStoneManager:GetSortedNode()
 	local idx = 1
 	for _, node in ipairs(Node) do
 	    
@@ -74,10 +74,10 @@ function KeyStoneManager:OnClick_ChatButton(arg1)
 		local blankStr = ""
 		for blank = strlen, 12 do
 		    -- WOW system diplays string had many space as just 4 black.. So, i just set it as '-'
-		    blankStr = blankStr .. "-"    
+		    blankStr = blankStr .. "."    
 		end
 		
-		local temp = format('%s%s%d-%s-%2d단---주차:%2d\n', node.name, blankStr, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
+		local temp = format('%s%s%d %s %2d단....주차:%2d\n', node.name, blankStr, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
 
 		-- It has timing issue. when it is called SendChatMessage without delay, The order of line is twisted.
 		-- It seems that The order is changed by WOW's engine.
@@ -88,7 +88,7 @@ function KeyStoneManager:OnClick_ChatButton(arg1)
 	end
 end
 
-function KeyStoneManager:clearc(self)
+function LiteKeyStoneManager:clearc(self)
 	keystone_table.node = {}
 	keystone_table.config.clickedButton = 1
 	keystone_table.clickedButtonToggle = 0,
@@ -113,7 +113,7 @@ end
 
 
 function updateKeyStoneDb()
-	print("updateKeyStoneDb")
+	-- print("updateKeyStoneDb")
 	FindCurrentKeystone()
 	--https://www.wowinterface.com/forums/showthread.php?t=56454
 	--for _, node in pairs(keystone_table.node) do
@@ -174,7 +174,7 @@ function FindCurrentKeystone()
 	end
 end
 
-function KeyStoneManager:GetSortedNode() 
+function LiteKeyStoneManager:GetSortedNode() 
 	sortedNode = {}
 	for k , v in pairs(keystone_table.node) do
 		v.name = k --Store the key in an entry called "name"
