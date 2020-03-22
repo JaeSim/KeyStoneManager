@@ -14,6 +14,8 @@ local dgNames = {
 	[251] = '썩굴',
 	[252] = '폭사',
 	[353] = '보랄',
+	[369] = '고철',
+	[370] = '작업',
 };
 
 function nodeSortByNameUp(a, b) return (a.name < b.name) end
@@ -102,7 +104,7 @@ end
 local function OnEvent(self, event, msg, _, _, _, lootingUser)
 	-- SendChatMessage("접속","SAY") 
     if (event =="PLAYER_LOGIN") then
-		print("enter world!")
+		print("Enter World!")
 		initialize()
 		--updateKeyStoneDb()
 	elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
@@ -162,7 +164,7 @@ function FindCurrentKeystone()
 		if not keystone_table or type(keystone_table) ~= 'table' then 
 			keystone_table = defaultsDb
 		end
-		
+		--print(mapId)
 		keystone_table.node[PlayerName] = {
 			name = PlayerName,
 			cl = englishClass,

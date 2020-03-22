@@ -56,7 +56,7 @@ function createsButton()
 	itemLevelButton = CreateFrame("Button", "itemLevelButton", uiFrame, "UIPanelButtonGrayTemplate")
 	itemLevelButton:SetText("템렙")
 	itemLevelButton:SetSize(30, 20)
-	itemLevelButton:SetPoint("TOPLEFT", 10 + 80,commonPosy) 
+	itemLevelButton:SetPoint("TOPLEFT", 10 + 100 ,commonPosy) 
 	itemLevelButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 2 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -69,7 +69,7 @@ function createsButton()
 	dgnameButton = CreateFrame("Button", "dgnameButton", uiFrame, "UIPanelButtonGrayTemplate")
 	dgnameButton:SetText("던전")
 	dgnameButton:SetSize(30, 20)
-	dgnameButton:SetPoint("TOPLEFT", 10 + 80 + 40,commonPosy) 
+	dgnameButton:SetPoint("TOPLEFT", 10 + 100 + 40,commonPosy) 
 	dgnameButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 3 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -82,7 +82,7 @@ function createsButton()
 	dglevelButton = CreateFrame("Button", "dglevelButton", uiFrame, "UIPanelButtonGrayTemplate")
 	dglevelButton:SetText("단수")
 	dglevelButton:SetSize(30, 20)
-	dglevelButton:SetPoint("TOPLEFT", 10 + 80 + 40 + 40,commonPosy) 
+	dglevelButton:SetPoint("TOPLEFT", 10 + 100 + 40 + 40,commonPosy) 
 	dglevelButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 4 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -95,7 +95,7 @@ function createsButton()
 	parkLevelButton = CreateFrame("Button", "parkLevelButton", uiFrame, "UIPanelButtonGrayTemplate")
 	parkLevelButton:SetText("주차")
 	parkLevelButton:SetSize(30, 20)
-	parkLevelButton:SetPoint("TOPLEFT", 10 + 80 + 40 + 40 + 40,commonPosy) 
+	parkLevelButton:SetPoint("TOPLEFT", 10 + 100 + 40 + 40 + 40,commonPosy) 
 	parkLevelButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 5 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
