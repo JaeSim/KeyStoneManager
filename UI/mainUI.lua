@@ -6,7 +6,6 @@ ksmDb = LiteKeyStoneManager.defaultsDb
 
 -- Minimap Control clicks
 function toggleUI() 
-    --print("toggleUI")
 	if uiFrame ~= nil then
 		local isVisible = uiFrame:IsVisible()
 		-- For escape key case, it should be toggled again
@@ -34,10 +33,6 @@ function reDrawUI()
 	uiFrame:Show()
 end
 
-LiteKeyStoneManager.widthInfo = {
-    widths = {}
-}
-
 function UpdateUI()
 	-- create UI frame
 	-- Todo: get size from configuration.
@@ -47,14 +42,12 @@ function UpdateUI()
 			isVisible = uiFrame:IsVisible()
 			uiFrame:Hide()
 		end
-		-- get information that should be displayed.
-		
 		uiFrameSizeX = 280
 		uiFrameSizeY = 220
-		uiFrame = CreateFrame("Frame", "uiFrame", UIParent, "BackdropTemplate")
+		uiFrame = CreateFrame("Frame", "uiFrame", UIParent)
 		tinsert(UISpecialFrames, "uiFrame")
 		uiFrame:SetSize(uiFrameSizeX, uiFrameSizeY)
-		--uiFrame:Hide()
+		uiFrame:Hide()
 		
 		ksmDb = keystone_table
 		
@@ -63,10 +56,8 @@ function UpdateUI()
 			ksmDb.config.uiPositionL = uiFrame:GetLeft()
 			ksmDb.config.uiPositionB = uiFrame:GetBottom()
 		end 
-
+		
 		uiFrame:SetPoint("BOTTOMLEFT", ksmDb.config.uiPositionL, ksmDb.config.uiPositionB)
-
-        -- SetBackdrop has error on 9.0.1
 		uiFrame:SetBackdrop( {
 			bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 			tile = true,
@@ -75,8 +66,8 @@ function UpdateUI()
 			edgeSize = 10,
 			insets = { left = 4, right = 3, top = 4, bottom = 3}
 			} )
-		
 		uiFrame:SetBackdropColor(0.2,0.2,0.2,0.7)
+
 		uiFrame:SetMovable(true)
 		uiFrame:EnableMouse(true)
 		uiFrame:RegisterForDrag("LeftButton")
@@ -90,8 +81,10 @@ function UpdateUI()
 			ksmDb.config.uiPositionB = self:GetBottom()
 		end)
 		--TEXT --
-	
+		
+
 		Node = LiteKeyStoneManager:GetSortedNode()
+		
 		local nameFull = "" local itemlevelFull = "" local dgnameFull = "" local dglevelFull = "" local parkLevelFull = ""
 		for _, node in ipairs(Node) do
 			nameFull = nameFull .. format('|c%s%s|r\n', RAID_CLASS_COLORS[node.cl].colorStr, node.name)
@@ -106,7 +99,6 @@ function UpdateUI()
 			end
 		end
 		
-		local totalWidth = 0
 		local commonPosy = -50
 		local nameFame = CreateFrame("Frame", nil, uiFrame)
 		nameFame:SetWidth(1) 
@@ -118,9 +110,7 @@ function UpdateUI()
 		nameFame.text:SetJustifyH("LEFT"); -- Left or Right
 		nameFame.text:SetJustifyV("TOP"); -- Top or Bottom
 		nameFame.text:SetText(nameFull)
-		local nameLen = math.floor(nameFame.text:GetStringWidth()) + 15
-		totalWidth = totalWidth + nameLen
-		LiteKeyStoneManager.widthInfo.widths["nameLen"] = nameLen
+		local nameLen = 100
 		
 		local itemLevel = CreateFrame("Frame", nil, uiFrame)
 		itemLevel:SetWidth(1) 
@@ -132,64 +122,43 @@ function UpdateUI()
 		itemLevel.text:SetJustifyH("LEFT"); -- Left or Right
 		itemLevel.text:SetJustifyV("TOP"); -- Top or Bottom
 		itemLevel.text:SetText(itemlevelFull)
-		local itemLevelLen = math.floor(itemLevel.text:GetStringWidth()) + 15
-        totalWidth = totalWidth + itemLevelLen
-		LiteKeyStoneManager.widthInfo.widths["itemLevelLen"] = itemLevelLen
 
 		local dgname = CreateFrame("Frame", nil, uiFrame)
 		dgname:SetWidth(1) 
 		dgname:SetHeight(1) 
-		dgname:SetPoint("TOPLEFT", 10 + nameLen + itemLevelLen,commonPosy)
+		dgname:SetPoint("TOPLEFT", 10 + nameLen + 40,commonPosy)
 		dgname.text = dgname:CreateFontString(nil,"ARTWORK") 
 		dgname.text:SetFont([[Fonts\2002.TTF]], 13, "OUTLINE")
 		dgname.text:SetPoint("TOPLEFT")
 		dgname.text:SetJustifyH("LEFT"); -- Left or Right
 		dgname.text:SetJustifyV("TOP"); -- Top or Bottom
 		dgname.text:SetText(dgnameFull)
-		local dgnameLen = math.floor(dgname.text:GetStringWidth()) + 15
-		totalWidth = totalWidth + dgnameLen
-		LiteKeyStoneManager.widthInfo.widths["dgnameLen"] = dgnameLen
 		
 		local dglevel = CreateFrame("Frame", nil, uiFrame)
 		dglevel:SetWidth(1) 
 		dglevel:SetHeight(1) 
-		dglevel:SetPoint("TOPLEFT", 10 + nameLen + itemLevelLen + dgnameLen,commonPosy)
+		dglevel:SetPoint("TOPLEFT", 10 + nameLen + 40 + 40,commonPosy)
 		dglevel.text = dglevel:CreateFontString(nil,"ARTWORK") 
 		dglevel.text:SetFont([[Fonts\2002.TTF]], 13, "OUTLINE")
 		dglevel.text:SetPoint("TOPLEFT")
 		dglevel.text:SetJustifyH("RIGHT"); -- Left or Right
 		dglevel.text:SetJustifyV("TOP"); -- Top or Bottom
 		dglevel.text:SetText(dglevelFull)
-		local dglevelLen = math.floor(dglevel.text:GetStringWidth()) + 20
-		totalWidth = totalWidth + dglevelLen
-		LiteKeyStoneManager.widthInfo.widths["dglevelLen"] = dglevelLen
 		
 		local parkLevel = CreateFrame("Frame", nil, uiFrame)
 		parkLevel:SetWidth(1) 
 		parkLevel:SetHeight(1) 
-		parkLevel:SetPoint("TOPLEFT", 10 + nameLen + itemLevelLen + dgnameLen + dglevelLen,commonPosy)
+		parkLevel:SetPoint("TOPLEFT", 10 + nameLen + 40 + 40 + 40,commonPosy)
 		parkLevel.text = parkLevel:CreateFontString(nil,"ARTWORK") 
 		parkLevel.text:SetFont([[Fonts\2002.TTF]], 13, "OUTLINE")
 		parkLevel.text:SetPoint("TOPLEFT")
 		parkLevel.text:SetJustifyH("RIGHT"); -- Left or Right
 		parkLevel.text:SetJustifyV("TOP"); -- Top or Bottom
 		parkLevel.text:SetText(parkLevelFull)
-		local parkLevelLen = math.floor(parkLevel.text:GetStringWidth()) + 15
-		totalWidth = totalWidth + parkLevelLen
-		LiteKeyStoneManager.widthInfo.widths["parkLevelLen"] = parkLevelLen
-
+		
 		-- refer buttonUI.lua
 		createsButton()
 		
-		--print(LiteKeyStoneManager.widthInfo.widths["nameLen"])
-	    --print(LiteKeyStoneManager.widthInfo.widths["parkLevelLen"])
-	
-		
-		uiFrameSizeX = 20 + totalWidth
-		if uiFrameSizeX < 220 then
-		    uiFrameSizeX = 220
-		end 
-		uiFrame:SetSize(uiFrameSizeX, uiFrameSizeY)
 		if isVisible == true then
 			uiFrame:Show()
 		end

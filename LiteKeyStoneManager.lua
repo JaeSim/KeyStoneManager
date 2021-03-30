@@ -3,10 +3,7 @@ local addonName, LiteKeyStoneManager = ...;
 local PlayerName = GetUnitName("player")
 local localizedClass, englishClass, classIndex = UnitClass("player")
 local mythicApiFlag = true
-
--- unused code
 local dgNames = {
-    -- battle for azeroth
 	[244] = '아탈',
 	[245] = '자유',
 	[246] = '톨다',
@@ -19,17 +16,8 @@ local dgNames = {
 	[353] = '보랄',
 	[369] = '고철',
 	[370] = '작업',
-	-- Shadowlands
-	[378] = '속죄',
-	[381] = '승천',
-	[382] = '고투',
-	[380] = '심연',
-	[376] = '죽상',
-	[377] = '저편',
-	[379] = '역병',
-	[375] = '티르',
-		
- };
+};
+
 function nodeSortByNameUp(a, b) return (a.name < b.name) end
 function nodeSortByItemLevelUp(a, b) return (a.itemlevel < b.itemlevel) end
 function nodeSortByDgNameUp(a, b) return (a.dgname < b.dgname) end
@@ -92,17 +80,12 @@ function LiteKeyStoneManager:OnClick_ChatButton(arg1)
 		end
 		
 		local temp = format('%s%s%d %s %2d단....주차:%2d\n', node.name, blankStr, node.itemlevel, node.dgname, node.dglevel,node.parkLevel)
-		
-		-- It has issue. SendChatMessage with C_Timer.After does not work to normal chat.
-		-- So, I delete C_Timer.
-		SendChatMessage(temp,self)
-		--{
-		---- It has timing issue. when it is called SendChatMessage without delay, The order of line is twisted.
-		---- It seems that The order is changed by WOW's engine.
-		--C_Timer.After(0.20 * idx, function() SendChatMessage(temp,self) end)
-		---- lua does not support i++ operation
-		--idx = idx + 1
-		--}
+
+		-- It has timing issue. when it is called SendChatMessage without delay, The order of line is twisted.
+		-- It seems that The order is changed by WOW's engine.
+		C_Timer.After(0.20 * idx, function() SendChatMessage(temp,self) end)
+		-- lua does not support i++ operation
+		idx = idx + 1
 		--print(temp)
 	end
 end
@@ -121,7 +104,7 @@ end
 local function OnEvent(self, event, msg, _, _, _, lootingUser)
 	-- SendChatMessage("접속","SAY") 
     if (event =="PLAYER_LOGIN") then
-		--print("Enter World!")
+		print("Enter World!")
 		initialize()
 		--updateKeyStoneDb()
 	elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
@@ -149,17 +132,16 @@ MyAddonFrame:RegisterEvent("CHAT_MSG_LOOT")
 MyAddonFrame:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE")
 	
 function FindCurrentKeystone()
-	
+	-- print("findkeystone")
     local itemID = 138019
-    --local BFAkey = 158923
-	local SLkey = 180653
+    local BFAkey = 158923
     local exists = false
 
-    if UnitLevel("player") == 60 then
-		--print("player 60")
+    if UnitLevel("player") == 120 then
+		--print("player 120")
         for bag = 0, NUM_BAG_SLOTS do
             for slot = 0, GetContainerNumSlots(bag) do
-                if(GetContainerItemID(bag, slot) == itemID or GetContainerItemID(bag, slot) == SLkey) then                    					
+                if(GetContainerItemID(bag, slot) == itemID or GetContainerItemID(bag, slot) == BFAkey) then                    					
                     exists = true
                     break 
                 end
@@ -172,35 +154,22 @@ function FindCurrentKeystone()
 			end
         end
     end
-    
+	
 	if exists then 
-	    --print("findkeystone pass? exist")
 		local mapId = C_MythicPlus.GetOwnedKeystoneChallengeMapID();
 		local level = C_MythicPlus.GetOwnedKeystoneLevel();
-		
-		local weekHistory = C_MythicPlus.GetRunHistory(false, true);
-		local park = 0
-		for k,v in pairs(weekHistory) do
-			if v.thisWeek then -- is this necessery?
-				--print(v.level..dgNames[v.mapChallengeModeID])
-				if v.level > park then
-				    park = v.level
-				end
-			end
-		end
+		local park,_,_,_ = C_MythicPlus.GetWeeklyChestRewardLevel();
 		
 		local overall, equipped = GetAverageItemLevel()
 		if not keystone_table or type(keystone_table) ~= 'table' then 
 			keystone_table = defaultsDb
 		end
 		--print(mapId)
-		--print(C_ChallengeMode.GetMapUIInfo(mapId))
 		keystone_table.node[PlayerName] = {
 			name = PlayerName,
 			cl = englishClass,
 			itemlevel = equipped,
-			--dgname = dgNames[mapId],
-			dgname = C_ChallengeMode.GetMapUIInfo(mapId),
+			dgname = dgNames[mapId],
 			dglevel = level,
 			parkLevel = park
 		}    

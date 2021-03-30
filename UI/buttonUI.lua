@@ -2,8 +2,6 @@ local addonName, LiteKeyStoneManager = ...;
 
 chatflag = 0
 clearflag = 0
-
-
 function createsButton()
 	--Button--
 	buttonSizeX = 60
@@ -38,17 +36,10 @@ function createsButton()
 	closeButton:SetPoint("TOPRIGHT", 0,0) 
 	closeButton:SetScript("OnClick", toggleUI) 
 	
-	tempTable = LiteKeyStoneManager.widthInfo.widths
-	for k, v in pairs(tempTable) do
-		if v < 40 then
-		    LiteKeyStoneManager.widthInfo.widths[k] = 40
-		end
-	end
-			
 	-- lable button
 	local commonPosy = -25
 	local buttonArray = {}
-	nameButton = CreateFrame("Button", "nameButton", uiFrame, "UIPanelButtonGrayTemplate,BackdropTemplate")
+	nameButton = CreateFrame("Button", "nameButton", uiFrame, "UIPanelButtonGrayTemplate")
 	nameButton:SetText("이름")
 	nameButton:SetSize(30, 20)
 	nameButton:SetPoint("TOPLEFT", 10 ,commonPosy) 
@@ -58,14 +49,14 @@ function createsButton()
 		end
 		ksmDb.config.clickedButton = 1
 		reDrawUI()
-		--print(ksmDb.config.clickedButtonToggle)
+		print(ksmDb.config.clickedButtonToggle)
 	end) 
 	buttonArray[1] = nameButton
 	
-	itemLevelButton = CreateFrame("Button", "itemLevelButton", uiFrame, "UIPanelButtonGrayTemplate,BackdropTemplate")
+	itemLevelButton = CreateFrame("Button", "itemLevelButton", uiFrame, "UIPanelButtonGrayTemplate")
 	itemLevelButton:SetText("템렙")
 	itemLevelButton:SetSize(30, 20)
-	itemLevelButton:SetPoint("TOPLEFT", 10 + LiteKeyStoneManager.widthInfo.widths["nameLen"] ,commonPosy) 
+	itemLevelButton:SetPoint("TOPLEFT", 10 + 100 ,commonPosy) 
 	itemLevelButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 2 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -75,11 +66,10 @@ function createsButton()
 	end) 
 	buttonArray[2] = itemLevelButton
 	
-	dgnameButton = CreateFrame("Button", "dgnameButton", uiFrame, "UIPanelButtonGrayTemplate,BackdropTemplate")
+	dgnameButton = CreateFrame("Button", "dgnameButton", uiFrame, "UIPanelButtonGrayTemplate")
 	dgnameButton:SetText("던전")
 	dgnameButton:SetSize(30, 20)
-	dgnameButton:SetPoint("TOPLEFT", 10 + LiteKeyStoneManager.widthInfo.widths["nameLen"] 
-	+ LiteKeyStoneManager.widthInfo.widths["itemLevelLen"],commonPosy) 
+	dgnameButton:SetPoint("TOPLEFT", 10 + 100 + 40,commonPosy) 
 	dgnameButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 3 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -89,12 +79,10 @@ function createsButton()
 	end) 
 	buttonArray[3] = dgnameButton
 	
-	dglevelButton = CreateFrame("Button", "dglevelButton", uiFrame, "UIPanelButtonGrayTemplate,BackdropTemplate")
+	dglevelButton = CreateFrame("Button", "dglevelButton", uiFrame, "UIPanelButtonGrayTemplate")
 	dglevelButton:SetText("단수")
 	dglevelButton:SetSize(30, 20)
-	dglevelButton:SetPoint("TOPLEFT", 10 + LiteKeyStoneManager.widthInfo.widths["nameLen"] 
-	+ LiteKeyStoneManager.widthInfo.widths["itemLevelLen"] 
-	+ LiteKeyStoneManager.widthInfo.widths["dgnameLen"],commonPosy) 
+	dglevelButton:SetPoint("TOPLEFT", 10 + 100 + 40 + 40,commonPosy) 
 	dglevelButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 4 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -104,13 +92,10 @@ function createsButton()
 	end) 
 	buttonArray[4] = dglevelButton
 		
-	parkLevelButton = CreateFrame("Button", "parkLevelButton", uiFrame, "UIPanelButtonGrayTemplate,BackdropTemplate")
+	parkLevelButton = CreateFrame("Button", "parkLevelButton", uiFrame, "UIPanelButtonGrayTemplate")
 	parkLevelButton:SetText("주차")
 	parkLevelButton:SetSize(30, 20)
-	parkLevelButton:SetPoint("TOPLEFT", 10 + LiteKeyStoneManager.widthInfo.widths["nameLen"] 
-	+ LiteKeyStoneManager.widthInfo.widths["itemLevelLen"] 
-	+ LiteKeyStoneManager.widthInfo.widths["dgnameLen"] 
-	+ LiteKeyStoneManager.widthInfo.widths["dglevelLen"],commonPosy) 
+	parkLevelButton:SetPoint("TOPLEFT", 10 + 100 + 40 + 40 + 40,commonPosy) 
 	parkLevelButton:SetScript("OnClick", function()
 		if ksmDb.config.clickedButton == 5 then
 			ksmDb.config.clickedButtonToggle = 1 -ksmDb.config.clickedButtonToggle
@@ -146,7 +131,7 @@ function toggleChatFrame()
 end
 
 function createChatFrame()
-	chatFrame = CreateFrame("Frame", "chatFrame", chatButton, "BackdropTemplate")
+	chatFrame = CreateFrame("Frame", "chatFrame", chatButton)
 	
 	chatFrame:SetSize(100, 150)
 	
@@ -200,7 +185,7 @@ function toggleClearFrame()
 end
 
 function createClearFrame() 
-	clearFrame = CreateFrame("Frame", "clearFrame", clearButton, "BackdropTemplate")
+	clearFrame = CreateFrame("Frame", "clearFrame", clearButton)
 	clearFrame:SetSize(250, 60)
 	clearFrame:SetPoint("BOTTOMLEFT", 20, 5)
 	clearFrame:SetBackdrop( {
