@@ -8,10 +8,17 @@ The goal of addon is
   2. make help to report Keystone's you have.
   3. implement addon wihout heavy library
  
-It is not updated frequently and is updated at will. (current version for 8.2)
+It is not updated frequently and is updated at will. (current version for 9.0.1)
 
 History 
-  10-04-18 : implement main function. make minmap button and implement chat function.
+  21-03-30 : huge change for Shadowlands 9.0.1
+  1) apply dynamic width of button.
+  2) C_MythicPlus.GetWeeklyChestRewardLevel() does not work. it is replaced to that searchicg best dungeon level from play history
+  3) MythicKeyStone Item ID was changed from 158923 to 180653
+  4) add new map ids for shadowlands
+  5) add "BackdropTemplate" inheritance attribute to use SetBackdrop
+  
+  19-04-18 : implement main function. make minmap button and implement chat function.
   To do List -
   1) no update issue when Keystone is updated as finish dunjeon.  
 
